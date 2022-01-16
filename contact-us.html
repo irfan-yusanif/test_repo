@@ -116,7 +116,7 @@
             <div class="row contact-wrap">
                 <div class="status alert alert-success" style="display: none"></div>
                 <form id="main-contact-form" class="contact-form" name="contact-form" method="post"
-                    action="sendemail.php">
+                    action="https://formspree.io/f/mqknepvz">
                     <div class="col-sm-5 col-sm-offset-1">
                         <div class="form-group">
                             <label>Name *</label>
@@ -128,11 +128,11 @@
                         </div>
                         <div class="form-group">
                             <label>Phone</label>
-                            <input type="number" class="form-control">
+                            <input type="number" class="form-control" name="phone">
                         </div>
                         <div class="form-group">
                             <label>Company Name</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="Company">
                         </div>
                     </div>
                     <div class="col-sm-5">
@@ -145,6 +145,7 @@
                             <textarea name="message" id="message" required="required" class="form-control"
                                 rows="8"></textarea>
                         </div>
+                        <p id="my-form-status"></p>
                         <div class="form-group">
                             <button type="submit" name="submit" class="btn btn-primary btn-lg"
                                 required="required">Submit Message</button>
@@ -187,6 +188,28 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/jquery.isotope.min.js"></script>
     <script src="js/main.js"></script>
+    <script>
+        var form = document.getElementById("main-contact-form");
+
+        async function handleSubmit(event) {
+            event.preventDefault();
+            var status = document.getElementById("my-form-status");
+            var data = new FormData(event.target);
+            fetch(event.target.action, {
+                method: form.method,
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                status.innerHTML = "Thanks for your submission!";
+                form.reset()
+            }).catch(error => {
+                status.innerHTML = "Oops! There was a problem submitting your form"
+            });
+        }
+        form.addEventListener("submit", handleSubmit)
+    </script>
 </body>
 
 </html>
